@@ -2,7 +2,7 @@
 
 let min = 1,
     max = 10,
-    winningNum = 5,
+    winningNum = getRandomNumber(min,max),
     guessesLeft = 3;
 
 //UI Elements 
@@ -38,7 +38,7 @@ guessBtn.addEventListener('click',function(){
       //Reduce guessesLeft count
       guessesLeft  -= 1;
 
-      if(guessesLeft === 0)
+      if(guessesLeft <= 0 )
       {
           //Game over - lost
        gameOver(false,`You lost, the number was ${winningNum}`); 
@@ -60,6 +60,11 @@ function setMessage(msg,color){
     message.style.color = color;
 }
 
+
+function getRandomNumber(min,max){
+  return Math.floor((Math.random() * (max-min + 1) + min));
+}
+
 function gameOver(won,msg){
     let color;
     won === true ? color = 'green' : color = 'red';
@@ -75,5 +80,20 @@ function gameOver(won,msg){
 
     //Set msg
     setMessage(msg,color)
+
+    //Play again
+    guessBtn.value = 'Play Again';
+    guessBtn.className += 'play-again';
+
+    //Play again event listener
+    game.addEventListener('mousedown',function(e){ //click even reloads it without being seen
+                                                  //'mousedown' is the more appropriate event for this
+
+      if(e.target.className === 'play-again'){
+        window.location.reload();
+      }
+    });
+
+
 
 }
